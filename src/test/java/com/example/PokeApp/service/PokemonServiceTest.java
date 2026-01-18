@@ -44,7 +44,7 @@ class PokemonServiceTest {
 
     @BeforeEach
     void setUp() {
-        pokemonService = new PokemonService(baseApi, pokemonApi, pokemonConverter);
+        pokemonService = new PokemonServiceImpl(baseApi, pokemonApi, pokemonConverter);
 
         bulbasaurJson = """
                 {
