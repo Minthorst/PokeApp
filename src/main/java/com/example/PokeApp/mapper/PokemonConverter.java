@@ -5,27 +5,32 @@ import com.example.PokeApp.enums.PokemonWeightUnit;
 import com.example.PokeApp.model.Pokemon;
 import com.example.PokeApp.model.PokemonHeight;
 import com.example.PokeApp.model.PokemonWeight;
+import org.jspecify.annotations.NonNull;
 import org.openapitools.client.model.PokemonDetail;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
+
+//TODO improve null checks and introduce custom exception
 @Component
 public class PokemonConverter {
-    public Pokemon toPokemon(PokemonDetail retrievedPokemon) {
+    public Pokemon toPokemon(@NonNull PokemonDetail retrievedPokemon) {
         return new Pokemon(retrievedPokemon.getName(), retrievedPokemon.getId(), toPokemonHeight(retrievedPokemon.getHeight()), toPokemonWeight(retrievedPokemon.getWeight()));
     }
 
     private PokemonWeight toPokemonWeight(Integer weight) {
         //as per documentation weight is provided by PokeApi as hectograms
+        if(weight == null) return null;
         BigDecimal weightInKilos = BigDecimal.valueOf(weight * 0.1);
         return new PokemonWeight(weightInKilos, PokemonWeightUnit.KILOGRAM);
 
     }
 
-    private PokemonHeight toPokemonHeight(int height) {
+    private PokemonHeight toPokemonHeight(Integer height) {
+        if(height == null) return null;
         //as per documentation height is provided by PokeApi as decimetres
-        int heightInCentimeter = height * 10;
+        Integer heightInCentimeter = height * 10;
         return new PokemonHeight(heightInCentimeter, PokemonHeightUnit.CENTIMETER);
     }
 }
